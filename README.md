@@ -32,7 +32,7 @@ make build
 # How to config
 
 ## Event exporter options:
-   
+
 ```
 Usage of ./bin/event-exporter:
   -alsologtostderr
@@ -123,9 +123,9 @@ spec:
         run: event-exporter
     spec:
       containers:
-      - image: mintel/event-exporter
+      - image: andrewb3000/event-exporter
         ports:
-        - containerPort: 80 
+        - containerPort: 80
         imagePullPolicy: Always
         name: event-exporter
         command: ["/event-exporter"]
