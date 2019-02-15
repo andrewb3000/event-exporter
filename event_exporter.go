@@ -23,8 +23,8 @@ import (
 
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/mintel/event-exporter/sinks"
-	"github.com/mintel/event-exporter/watchers"
+	"github.com/andrewb3000/event-exporter/sinks"
+	"github.com/andrewb3000/event-exporter/watchers"
 	"sync"
 )
 

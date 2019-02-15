@@ -2,14 +2,14 @@ FROM golang:1.11.5-alpine3.9
 
 RUN apk add --no-cache make git && \
 	go get -u github.com/golang/dep/cmd/dep && \
-	mkdir -p /go/src/github.com/mintel/event-exporter
+	mkdir -p /go/src/github.com/andrewb3000/event-exporter
 
-COPY Gopkg.lock Gopkg.toml /go/src/github.com/mintel/event-exporter/
+COPY Gopkg.lock Gopkg.toml /go/src/github.com/andrewb3000/event-exporter/
 
-WORKDIR /go/src/github.com/mintel/event-exporter/
+WORKDIR /go/src/github.com/andrewb3000/event-exporter/
 RUN dep ensure -vendor-only
 
-COPY . /go/src/github.com/mintel/event-exporter/
+COPY . /go/src/github.com/andrewb3000/event-exporter/
 
 RUN go build -o /event-exporter
 

@@ -1,7 +1,7 @@
 
 GOFILES_NOVENDOR = $(shell find . -type f -name '*.go' -not -path "./vendor/*")
 UNITTEST_PACKAGES = $(shell go list ./... | grep -v /vendor/ | grep -v integration_test)
-IMG_REPO ?= mintel/event-exporter
+IMG_REPO ?= andrewb3000/event-exporter
 IMG_TAG ?= latest
 BIN ?= event-exporter
 
