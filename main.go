@@ -35,6 +35,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 
 	"github.com/andrewb3000/event-exporter/sinks"
+  "crypto/tls"
 )
 
 const (
@@ -51,6 +52,8 @@ var (
 		"expose Prometheus http handler")
 	sinkName              = flag.String("sink", sinkNameElasticSearch, "Sink type to save the exported events: elasticsearch/http")
 	elasticsearchEndpoint = flag.String("elasticsearch-server", "http://elasticsearch:9200/", "Elasticsearch endpoint")
+	elasticsearchUser 	  = flag.String("elasticsearch-user", "elasticuser", "Elasticsearch username")
+	elasticsearchPass 	  = flag.String("elasticsearch-pass", "elasticuser", "Elasticsearch password")
 
 	// for http sink
 	httpEndpoint = flag.String("http-endpoint", "", "Http endpoint")
@@ -105,7 +108,13 @@ func main() {
 	if *sinkName == sinkNameElasticSearch {
 		config := sinks.DefaultElasticSearchConf()
 		config.Endpoint = *elasticsearchEndpoint
-		outSink, err = sinks.NewElasticSearchSink(config)
+		config.User = *elasticsearchUser
+		config.Password = *elasticsearchPass
+    tr := &http.Transport{
+        	TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+  	}
+    clienthttp := &http.Client{Transport: tr}
+		outSink, err = sinks.NewElasticSearchSink(config, clienthttp)
 		if err != nil {
 			glog.Fatalf("Failed to initialize elasticsearch output: %v", err)
 		}

@@ -24,6 +24,7 @@ import (
 	"github.com/golang/glog"
 	"github.com/olivere/elastic"
 	api_v1 "k8s.io/api/core/v1"
+  "net/http"
 )
 
 type ElasticSearchConf struct {
@@ -58,9 +59,12 @@ func DefaultElasticSearchConf() *ElasticSearchConf {
 	}
 }
 
-func NewElasticSearchSink(config *ElasticSearchConf) (*ElasticSearchSink, error) {
+func NewElasticSearchSink(config *ElasticSearchConf, clienthttp *http.Client) (*ElasticSearchSink, error) {
 	esClient, err := elastic.NewClient(elastic.SetSniff(false),
-		elastic.SetHealthcheckTimeoutStartup(10*time.Second), elastic.SetURL(config.Endpoint))
+		elastic.SetHealthcheckTimeoutStartup(10*time.Second), elastic.SetURL(config.Endpoint),
+    elastic.SetHttpClient(clienthttp),
+		elastic.SetBasicAuth(config.User, config.Password),
+  )
 	if err != nil {
 		glog.Errorf("Error create elasticsearch(%s) output %v", config.Endpoint, err)
 		return nil, err
